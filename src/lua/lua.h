@@ -7,7 +7,7 @@
 
 #ifndef LUA_H_
 #define LUA_H_
-namespace lua {
+namespace my_lua {
 #include <lua.hpp>
 #include <luabind/luabind.hpp>
 
