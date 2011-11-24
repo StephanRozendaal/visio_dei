@@ -7,6 +7,7 @@
 #include "lua/lua.h"
 
 int main() {
+lua_loader* loader = new lua_loader();
 
 return 0;
 }
