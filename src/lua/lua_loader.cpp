@@ -7,7 +7,6 @@
 #include "lua.h"
 
 lua_loader::lua_loader() {
-	luabind::open(L);
 
 }
 

@@ -5,9 +5,10 @@
  *      Author: stephan
  */
 #include "lua/lua.h"
+#include "library/library.h"
 
 int main() {
-lua_loader* loader = new lua_loader();
+
 
 return 0;
 }
