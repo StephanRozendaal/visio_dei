@@ -9,7 +9,11 @@
 
 int main() {
 
-
+	video_resource source(0);
+	cv::Mat * image = source.get_resource();
+	cv::namedWindow("scherm", CV_WINDOW_NORMAL);
+	cv::imshow("scherm", *image);
+	cv::imwrite("test.jpg", *image);
 return 0;
 }
 
