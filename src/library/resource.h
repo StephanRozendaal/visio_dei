@@ -15,15 +15,17 @@
  */
 class image_source {
 public:
-	image_source(cv::Mat* img);
+	image_source();
+	image_source(const cv::Mat img);
+	image_source(const char* , int);
 	~image_source();
-	void set_source(cv::Mat* img);
+	void set_source(const cv::Mat img);
 	cv::Mat* get_source();
 protected:
 	cv::Mat image;
 };
 
-class video_source: image_source {
+class video_source : public image_source {
 public:
 	video_source(int input);
 	video_source(const char input);
