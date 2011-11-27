@@ -8,10 +8,9 @@
 #ifndef RESOURCE_H_
 #define RESOURCE_H_
 
-#include "library.h"
-
 /**
- * basis cv Matrix container klasse
+ * basis cv Point container klasse
+ * TODO: verschillende point typen
  */
 class point_resource {
 public:
@@ -23,6 +22,10 @@ public:
 protected:
 	cv::Point point;
 };
+
+/**
+ * basis CV Matrix image container klasse
+ */
 class image_resource {
 public:
 	image_resource();
@@ -35,6 +38,10 @@ protected:
 	cv::Mat image;
 };
 
+/**
+ * CV video container klasse
+ * TODO: worden de frames goed opgehaald, testen met een videofile. Ook mogelijkheden om frame X op te vragen
+ */
 class video_resource : public image_resource {
 public:
 	video_resource(int);

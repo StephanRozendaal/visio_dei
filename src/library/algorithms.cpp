@@ -8,10 +8,12 @@
 #include "library.h"
 
 namespace alg {
-void threshold(cv::Mat& input, cv::Mat& output, double thresh, double max,
+image_resource threshold(image_resource input, double thresh, double max,
 		int type) {
-	cv::threshold(input, output, thresh, max, type);
+	cv::Mat output;
+	cv::threshold(input.get_resource(), output, thresh, max, type);
+	image_resource *img_output = new image_resource(output);
+	return *img_output;
 }
 }
-
 

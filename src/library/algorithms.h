@@ -15,7 +15,7 @@
 #define ALGORITHMS_H_
 
 namespace alg {
-void threshold(cv::Mat& input, cv::Mat& output, double thresh, double max, int type);
+image_resource threshold(image_resource input, double thresh, double max, int type);
 }
 
 #endif /* ALGORITHMS_H_ */
