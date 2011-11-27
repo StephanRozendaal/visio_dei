@@ -28,6 +28,7 @@
  */
 #include "input.h"
 #include "resource.h"
+#include "algorithms.h"
 
 /*------------------------------*/
 

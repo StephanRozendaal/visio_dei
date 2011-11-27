@@ -1,8 +1,5 @@
+#dit deel is gestolen uit een ander project, voor cross-platform compatibiliteit
 set(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS true)
-
-# Following block can broke build in case of cross-compilng
-# but CMAKE_CROSSCOMPILING variable will be set only on project(OpenCV) command
-# so we will try to detect crosscompiling by presense of CMAKE_TOOLCHAIN_FILE
 if(NOT CMAKE_TOOLCHAIN_FILE)
     # Add these standard paths to the search paths for FIND_LIBRARY
     # to find libraries from these locations first

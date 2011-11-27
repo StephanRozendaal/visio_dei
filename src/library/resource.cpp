@@ -13,7 +13,7 @@ point_resource::point_resource() {
 
 }
 
-point_resource::point_resource(cv::Point p) {
+point_resource::point_resource(cv::Point& p) {
 	this->point = p;
 }
 
@@ -22,7 +22,7 @@ point_resource::~point_resource() {
 	//free this->point;
 }
 
-void point_resource::set_resource(cv::Point p) {
+void point_resource::set_resource(cv::Point& p) {
 	this->point = p;
 }
 
@@ -35,7 +35,7 @@ cv::Point* point_resource::get_resource() {
 image_resource::image_resource() {
 
 }
-image_resource::image_resource(const cv::Mat img) {
+image_resource::image_resource(cv::Mat& img) {
 	this->image = img;
 }
 
@@ -47,12 +47,12 @@ image_resource::~image_resource() {
 	this->image.release();
 }
 
-void image_resource::set_resource(const cv::Mat img) {
+void image_resource::set_resource(cv::Mat& img) {
 	this->image = img;
 }
 
-cv::Mat* image_resource::get_resource() {
-	return &image;
+cv::Mat image_resource::get_resource() {
+	return image;
 }
 
 /**
@@ -62,7 +62,7 @@ video_resource::video_resource(int input) {
 	video.open(input);
 }
 
-video_resource::video_resource(const char input) {
+video_resource::video_resource(const char* input) {
 	video.open(input);
 }
 
@@ -74,7 +74,7 @@ void video_resource::set_resource(int input) {
 	video.open(input);
 }
 
-void video_resource::set_resource(const char input) {
+void video_resource::set_resource(const char* input) {
 	video.open(input);
 }
 
@@ -85,4 +85,3 @@ cv::Mat* video_resource::get_resource() {
 		else
 			return &image;
 }
-

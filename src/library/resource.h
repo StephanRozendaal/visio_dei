@@ -16,9 +16,9 @@
 class point_resource {
 public:
 	point_resource();
-	point_resource(cv::Point);
+	point_resource(cv::Point&);
 	~point_resource();
-	void set_resource(const cv::Point);
+	void set_resource(cv::Point&);
 	cv::Point* get_resource();
 protected:
 	cv::Point point;
@@ -26,22 +26,22 @@ protected:
 class image_resource {
 public:
 	image_resource();
-	image_resource(const cv::Mat img);
+	image_resource(cv::Mat&);
 	image_resource(const char* , int);
 	~image_resource();
-	void set_resource(const cv::Mat img);
-	cv::Mat* get_resource();
+	void set_resource(cv::Mat&);
+	cv::Mat get_resource();
 protected:
 	cv::Mat image;
 };
 
 class video_resource : public image_resource {
 public:
-	video_resource(int input);
-	video_resource(const char input);
+	video_resource(int);
+	video_resource(const char*);
 	~video_resource();
-	void set_resource(int input);
-	void set_resource(const char input);
+	void set_resource(int);
+	void set_resource(const char*);
 	cv::Mat* get_resource();
 protected:
 	cv::VideoCapture video;
