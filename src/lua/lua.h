@@ -8,18 +8,27 @@
 #ifndef LUA_H_
 #define LUA_H_
 
-extern "C" {
-#include <lua.h>
-#include <lualib.h>
-#include <lauxlib.h>
-}
+/**
+ * externe libraries
+ */
+#include <lua.hpp>
 #include <luabind/luabind.hpp>
+#include <luabind/class.hpp>
+#include <luabind/function.hpp>
+#include <luabind/object.hpp>
 #include <iostream>
+
+/**
+ * eigen libraries
+ */
+#include "../library/library.h"
 
 class lua_loader {
 public:
 	lua_loader();
 	~lua_loader();
+	void bind();
+	void execute(const char*);
 private:
 	lua_State* L;
 protected:
