@@ -14,15 +14,28 @@
 
 #ifndef LIBRARY_H_
 #define LIBRARY_H_
+
+/**
+ * external library includes
+ */
 #include <opencv2/opencv.hpp>
+#include <string>
+#include <new>
 
-class input {
+/*------------------------------*/
 
-};
+/**
+ * local header includes
+ */
+#include "input.h"
+#include "resource.h"
+#include "algorithms.h"
 
-class output_screen {
+/*------------------------------*/
 
-};
+/**
+ * globale variabelen en defines
+ */
 
 
 

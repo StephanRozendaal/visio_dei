@@ -5,10 +5,15 @@
  *      Author: stephan
  */
 #include "lua/lua.h"
+#include "library/library.h"
 
 int main() {
-lua_loader* loader = new lua_loader();
 
+	video_resource source(0);
+	cv::Mat * image = source.get_resource();
+	cv::namedWindow("scherm", CV_WINDOW_NORMAL);
+	cv::imshow("scherm", *image);
+	cv::imwrite("test.jpg", *image);
 return 0;
 }
 
