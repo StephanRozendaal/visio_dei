@@ -47,6 +47,12 @@
 								<option id="gnu.cpp.link.option.paths.508623545" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths"/>
 								<option id="gnu.cpp.link.option.libs.524934216" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="lua"/>
+									<listOptionValue builtIn="false" value="GL"/>
+									<listOptionValue builtIn="false" value="GLU"/>
+									<listOptionValue builtIn="false" value="SFML/graphics"/>
+									<listOptionValue builtIn="false" value="SGML/audio"/>
+									<listOptionValue builtIn="false" value="SFML/window"/>
+									<listOptionValue builtIn="false" value="SFML/system"/>
 									<listOptionValue builtIn="false" value="luabind"/>
 									<listOptionValue builtIn="false" value="m"/>
 									<listOptionValue builtIn="false" value="dl"/>
