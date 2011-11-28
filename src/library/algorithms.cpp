@@ -8,12 +8,22 @@
 #include "library.h"
 
 namespace alg {
+image_resource change_color_space(image_resource input, int code) {
+	cv::Mat output;
+	cv::cvtColor(input.get_resource(), output, code);
+	image_resource *img_output = new image_resource(output);
+	return *img_output;
+}
+namespace segmentation {
+
 image_resource threshold(image_resource input, double thresh, double max,
 		int type) {
 	cv::Mat output;
 	cv::threshold(input.get_resource(), output, thresh, max, type);
 	image_resource *img_output = new image_resource(output);
 	return *img_output;
+}
+
 }
 }
 

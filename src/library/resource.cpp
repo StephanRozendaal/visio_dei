@@ -7,7 +7,7 @@
 #include "library.h"
 
 /**
- * point klasse point_source
+ * klasse point_source
  */
 point_resource::point_resource() {
 
