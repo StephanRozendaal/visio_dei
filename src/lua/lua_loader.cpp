@@ -8,7 +8,7 @@
 
 lua_loader::lua_loader() {
 	L = lua_open();
-	//luaL_baselibopen(L);
+	luaL_openlibs(L);
 	this->bind();
 }
 
@@ -34,5 +34,5 @@ void lua_loader::bind() {
 
 }
 void lua_loader::execute(const char* script) {
-	luaL_dofile(L, script);
+	luaL_loadfile(L, script);
 }
