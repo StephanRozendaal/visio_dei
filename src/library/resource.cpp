@@ -57,10 +57,13 @@ cv::Mat* image_resource::get_resource() {
 std::vector<unsigned char> image_resource::to_sfml() {
 	std::vector<unsigned char> buffer;
 
-	std::vector<int> p;
-	p.push_back(CV_IMWRITE_JPEG_QUALITY);
-	p.push_back(90);
-	cv::imencode(".jpg", image, buffer, p );
+	//voor encoderings instellingen
+	std::vector<int> options;
+	//vector wordt per set van 2 int waardes uitgelezen
+	options.push_back(CV_IMWRITE_JPEG_QUALITY); // naam of key
+	options.push_back(90); //gewenste waarde
+
+	cv::imencode(".jpg", image, buffer, options );
 	return buffer;
 }
 

@@ -12,10 +12,12 @@ class window3D {
 public:
 	window3D();
 	~Window3D();
+	void addToDraw();
+
 protected:
 
 private:
-	sf::Window window;
+	sf::Window window; // speciaal voor 3D beelden
 };
 
 

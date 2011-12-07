@@ -16,6 +16,13 @@ window2D::~window2D() {
 	window.Close();
 }
 
+/**
+ * In deze methode is nog wat geknoeid, ik heb nu Sprite, Texture en Image als klasse parameters
+ * toegevoegd, ze stonden eerst alleen in de scope van de functie addToDraw, maar doordat ze werden
+ * verwijderd buiten de scope, werd de data van de Sprite die uiteindelijk op het scherm komt
+ * ook verwijderd. Dit resulteerde in een wit vlak op het scherm.
+ * TODO: uitzoeken welke objecten bewaard kunnen blijven.
+ */
 void window2D::addToDraw(image_resource& input) {
 
 	std::vector<unsigned char> data = input.to_sfml();
@@ -24,6 +31,10 @@ void window2D::addToDraw(image_resource& input) {
 	texture.LoadFromImage(image);
 	sprite = Sprite(texture);
 }
+
+/**
+ * Inhoud hiervan is tijdelijk, de main loop van een window moet ergens anders komen.
+ */
 void window2D::Display() {
 	while (window.IsOpened())
 	     {

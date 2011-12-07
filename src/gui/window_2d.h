@@ -15,7 +15,7 @@ public:
 	void addToDraw( image_resource&);
 	void Display();
 private:
-sf::RenderWindow window;
+sf::RenderWindow window; // speciaal voor 2D beelden
 sf::Sprite sprite;
 sf::Texture texture;
 sf::Image image;
