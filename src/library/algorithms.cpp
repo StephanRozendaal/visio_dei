@@ -9,8 +9,11 @@
 
 namespace alg {
 image_resource change_color_space(image_resource input, int code) {
-	cv::Mat output;
-	cv::cvtColor(input.get_resource(), output, code);
+	using namespace cv;
+	Mat output;
+	Mat *temp = input.get_resource();
+	Mat image(*temp);
+	cvtColor(image, output, code);
 	image_resource *img_output = new image_resource(output);
 	return *img_output;
 }
@@ -18,14 +21,20 @@ namespace segmentation {
 
 image_resource threshold(image_resource input, double thresh, double max,
 		int type) {
-	cv::Mat output;
-	cv::threshold(input.get_resource(), output, thresh, max, type);
+	using namespace cv;
+	Mat output;
+	Mat *temp = input.get_resource();
+	Mat image(*temp);
+	threshold(image, output, thresh, max, type);
 	image_resource *img_output = new image_resource(output);
 	return *img_output;
 }
 }
 namespace detection {
 
+/**
+ * angle() is een hulpfunctie voor findSquares()
+ */
 double angle(cv::Point pt1, cv::Point pt2, cv::Point pt0) {
 	double dx1 = pt1.x - pt0.x;
 	double dy1 = pt1.y - pt0.y;
@@ -39,10 +48,14 @@ double angle(cv::Point pt1, cv::Point pt2, cv::Point pt0) {
  * gepikt uit de CV samples
  *
  */
-void findSquares(const cv::Mat& image,
+void findSquares(image_resource image_res,
 		std::vector<std::vector<cv::Point> >& squares) {
 	using namespace std;
 	using namespace cv;
+
+	//image resource omzetten
+	Mat *temp = image_res.get_resource();
+	Mat image(*temp);
 
 	//waardes voor threshold levels
 	int thresh = 50, N = 11;
@@ -130,6 +143,7 @@ for (size_t i = 0; i < squares.size(); i++) {
 	int n = (int) squares[i].size();
 	polylines(image, &p, &n, 1, true, Scalar(0, 255, 0), 3, CV_AA);
 }
+// kleine aanpassing voor webcam die erg kleine beelden geeft, 320x200 resolutie
 resize(image, image, Size(), 3.0, 3.0, INTER_LINEAR);
 }
 }

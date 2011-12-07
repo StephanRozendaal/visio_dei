@@ -15,8 +15,8 @@ image_resource threshold(const image_resource, double, double, int);
 }
 namespace detection {
 double angle(cv::Point, cv::Point, cv::Point);
-void findSquares(const cv::Mat&, std::vector<std::vector<cv::Point> >&);
-void drawSquares(cv::Mat&, std::vector<std::vector<cv::Point> >&);
+void findSquares(image_resource, std::vector<std::vector<cv::Point> >&);
+void drawSquares(image_resource, std::vector<std::vector<cv::Point> >&);
 }
 }
 #endif /* ALGORITHMS_H_ */

@@ -51,8 +51,17 @@ void image_resource::set_resource(cv::Mat& img) {
 	this->image = img;
 }
 
-cv::Mat image_resource::get_resource() {
-	return image;
+cv::Mat* image_resource::get_resource() {
+	return &image;
+}
+std::vector<unsigned char> image_resource::to_sfml() {
+	std::vector<unsigned char> buffer;
+
+	std::vector<int> p;
+	p.push_back(CV_IMWRITE_JPEG_QUALITY);
+	p.push_back(90);
+	cv::imencode(".jpg", image, buffer, p );
+	return buffer;
 }
 
 /**

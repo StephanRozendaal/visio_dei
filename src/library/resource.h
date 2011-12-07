@@ -33,7 +33,8 @@ public:
 	image_resource(const char* , int);
 	~image_resource();
 	void set_resource(cv::Mat&);
-	cv::Mat get_resource();
+	cv::Mat* get_resource();
+	std::vector<unsigned char> to_sfml();
 protected:
 	cv::Mat image;
 };
