@@ -24,7 +24,6 @@ window2D::~window2D() {
  * TODO: uitzoeken welke objecten bewaard kunnen blijven.
  */
 void window2D::addToDraw(image_resource& input) {
-
 	std::vector<unsigned char> data = input.to_sfml();
 	image.LoadFromMemory(data.data(), data.size());
 
@@ -36,8 +35,8 @@ void window2D::addToDraw(image_resource& input) {
  * Inhoud hiervan is tijdelijk, de main loop van een window moet ergens anders komen.
  */
 void window2D::Display() {
-	while (window.IsOpened())
-	     {
+	//while (window.IsOpened())
+	  //   {
 	         // Process events
 	         sf::Event event;
 	         while (window.PollEvent(event))
@@ -55,5 +54,5 @@ void window2D::Display() {
 
 	         // Update the window
 	         window.Display();
-	     }
+	   //  }
 }

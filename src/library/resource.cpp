@@ -60,10 +60,10 @@ std::vector<unsigned char> image_resource::to_sfml() {
 	//voor encoderings instellingen
 	std::vector<int> options;
 	//vector wordt per set van 2 int waardes uitgelezen
-	options.push_back(CV_IMWRITE_JPEG_QUALITY); // naam of key
-	options.push_back(90); //gewenste waarde
+	options.push_back(CV_IMWRITE_PNG_COMPRESSION); // naam of key
+	options.push_back(2); //gewenste waarde
 
-	cv::imencode(".jpg", image, buffer, options );
+	cv::imencode(".png", image, buffer, options );
 	return buffer;
 }
 
@@ -72,10 +72,12 @@ std::vector<unsigned char> image_resource::to_sfml() {
  */
 video_resource::video_resource(int input) {
 	video.open(input);
+	video >> image;
 }
 
 video_resource::video_resource(const char* input) {
 	video.open(input);
+	video >> image;
 }
 
 video_resource::~video_resource() {
@@ -96,4 +98,17 @@ cv::Mat* video_resource::get_resource() {
 			return NULL;
 		else
 			return &image;
+}
+
+std::vector<unsigned char> video_resource::to_sfml() {
+	this->get_resource();
+	buffer.clear();
+	//voor encoderings instellingen
+	std::vector<int> options;
+	//vector wordt per set van 2 int waardes uitgelezen
+	options.push_back(CV_IMWRITE_PNG_COMPRESSION); // naam of key
+	options.push_back(2); //gewenste waarde
+
+	cv::imencode(".png", image, buffer, options );
+	return buffer;
 }

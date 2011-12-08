@@ -129,22 +129,25 @@ void findSquares(image_resource image_res,
 			}
 		}
 	}
-}
+
 }
 
 /**
  * tekent de rechthoeken op het image uit de parameter
  */
-void drawSquares(cv::Mat& image,
-	std::vector<std::vector<cv::Point> >& squares) {
-using namespace cv;
-for (size_t i = 0; i < squares.size(); i++) {
-	const Point* p = &squares[i][0];
-	int n = (int) squares[i].size();
-	polylines(image, &p, &n, 1, true, Scalar(0, 255, 0), 3, CV_AA);
-}
+void drawSquares(image_resource image_res,
+		std::vector<std::vector<cv::Point> >& squares) {
+	using namespace cv;
+//image resource omzetten
+	Mat *temp = image_res.get_resource();
+	Mat image(*temp);
+	for (size_t i = 0; i < squares.size(); i++) {
+		const Point* p = &squares[i][0];
+		int n = (int) squares[i].size();
+		polylines(image, &p, &n, 1, true, Scalar(0, 255, 0), 3, CV_AA);
+	}
 // kleine aanpassing voor webcam die erg kleine beelden geeft, 320x200 resolutie
-resize(image, image, Size(), 3.0, 3.0, INTER_LINEAR);
+	resize(image, image, Size(), 3.0, 3.0, INTER_LINEAR);
 }
 }
-
+}

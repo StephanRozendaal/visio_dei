@@ -31,12 +31,13 @@ public:
 	image_resource();
 	image_resource(cv::Mat&);
 	image_resource(const char* , int);
-	~image_resource();
-	void set_resource(cv::Mat&);
-	cv::Mat* get_resource();
-	std::vector<unsigned char> to_sfml();
+	virtual ~image_resource();
+	virtual void set_resource(cv::Mat&);
+	virtual cv::Mat* get_resource();
+	virtual std::vector<unsigned char> to_sfml();
 protected:
 	cv::Mat image;
+	std::vector<unsigned char> buffer;
 };
 
 /**
@@ -47,10 +48,11 @@ class video_resource : public image_resource {
 public:
 	video_resource(int);
 	video_resource(const char*);
-	~video_resource();
+	virtual ~video_resource();
 	void set_resource(int);
 	void set_resource(const char*);
 	cv::Mat* get_resource();
+	std::vector<unsigned char> to_sfml();
 protected:
 	cv::VideoCapture video;
 };

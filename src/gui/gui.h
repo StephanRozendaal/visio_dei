@@ -16,6 +16,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Config.hpp>
+#include <typeinfo>
 
 /*------------------------------*/
 
