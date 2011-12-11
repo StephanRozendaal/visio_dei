@@ -1,23 +1,9 @@
-#dit deel is gestolen uit een ander project, voor cross-platform compatibiliteit
-set(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS true)
-if(NOT CMAKE_TOOLCHAIN_FILE)
-    # Add these standard paths to the search paths for FIND_LIBRARY
-    # to find libraries from these locations first
-    if(UNIX)
-        set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} /lib /usr/lib)
-    endif()
-
-    # it _must_ go before PROJECT(OpenCV) in order to work
-    if(WIN32)
-        set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install" CACHE PATH "Installation Directory")
-    else()
-        set(CMAKE_INSTALL_PREFIX "/usr/local" CACHE PATH "Installation Directory")
-    endif()
-
-    if(MSVC)
-        set(CMAKE_USE_RELATIVE_PATHS ON CACHE INTERNAL "" FORCE)
-    endif()
-endif(NOT CMAKE_TOOLCHAIN_FILE)
-
+# Dit is het begin van de Cmake buildfiles voor het minor computer vision project
+# Gemaakt met Cmake versie 2.8
+cmake_minimum_required(VERSION 2.8)
+#het project heet minor_computer_vision
 project(minor_computer_vision)
+
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMakeModules;${CMAKE_MODULE_PATH}")
+#source files zitten in directory src/
 add_subdirectory(src)
