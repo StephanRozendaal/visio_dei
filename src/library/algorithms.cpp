@@ -19,15 +19,13 @@ image_resource change_color_space(image_resource input, int code) {
 }
 namespace segmentation {
 
-image_resource threshold(image_resource input, double thresh, double max,
+void threshold(image_resource input, double thresh, double max,
 		int type) {
 	using namespace cv;
-	Mat output;
 	Mat *temp = input.get_resource();
 	Mat image(*temp);
+	Mat output(*temp);
 	threshold(image, output, thresh, max, type);
-	image_resource *img_output = new image_resource(output);
-	return *img_output;
 }
 }
 namespace detection {
