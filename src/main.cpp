@@ -1,6 +1,10 @@
 /*
  * main.cpp
+<<<<<<< HEAD
  *
+=======
+ * 
+>>>>>>> be327a426d989a4d9382403d66dade1da032779c
  *  Created on: Nov 18, 2011
  *      Author: stephan
  */
