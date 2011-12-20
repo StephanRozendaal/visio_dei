@@ -22,5 +22,4 @@ private:
 protected:
 
 };
-
 #endif /* WINDOW_2D_H_ */
