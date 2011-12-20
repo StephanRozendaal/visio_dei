@@ -5,4 +5,6 @@ cmake_minimum_required(VERSION 2.8)
 project(minor_computer_vision)
 #source files zitten in directory src/
 include_directories("include")
+#we gebruiken C++11
+set(CMAKE_CXX_FLAGS "-std=c++0x")
 add_subdirectory(src)
