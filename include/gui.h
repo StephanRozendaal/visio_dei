@@ -23,7 +23,7 @@
 /**
  * local header includes
  */
-#include "../library/library.h"
+#include "library.h"
 #include "window_2d.h"
 
 /*------------------------------*/

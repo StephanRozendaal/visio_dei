@@ -3,7 +3,6 @@
 cmake_minimum_required(VERSION 2.8)
 #het project heet minor_computer_vision
 project(minor_computer_vision)
-
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMakeModules;${CMAKE_MODULE_PATH}")
 #source files zitten in directory src/
+include_directories("include")
 add_subdirectory(src)

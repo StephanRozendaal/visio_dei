@@ -7,7 +7,7 @@
 
 #ifndef WINDOW_2D_H_
 #define WINDOW_2D_H_
-#include "../library/library.h"
+#include "library.h"
 class window2D {
 public:
 	window2D();

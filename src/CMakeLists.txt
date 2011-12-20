@@ -1,24 +1,8 @@
-
-set (SRC
-    gui/gui.cpp
-    gui/gui.h
-    gui/window_2d.cpp
-    gui/window_2d.h
-    library/algorithms.cpp
-    library/algorithms.h
-    library/input.cpp
-    library/input.h
-    library/library.h
-    library/resource.cpp
-    library/resource.h
-    lua/lua.h
-    lua/lua_loader.cpp
-    main.cpp
-    )
+file(GLOB SRC "library/*.cpp")
+message("source_code=${SRC}")
+add_library(minor_computer_vision SHARED ${SRC})
     
-add_executable(minor_computer_vision ${SRC})
-    
-    #libraries check, en instellingen
+#libraries check, en instellingen
 find_package(Lua51 REQUIRED)
 if (LUA51_FOUND)
 	message("===== LUA Found =====")
