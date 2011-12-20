@@ -8,12 +8,12 @@
 using namespace sf;
 
 window2D::window2D() {
-	//TODO: videomode staat nu hard-coded, we hebben een slimmere manier nodig.
-	window.Create(VideoMode(800, 600, 32), "GUI", Style::Default); // 4e parameter is weggelaten
+  //TODO: videomode staat nu hard-coded, we hebben een slimmere manier nodig.
+  window.Create(VideoMode(800, 600, 32), "GUI", Style::Default); // 4e parameter is weggelaten
 }
 
 window2D::~window2D() {
-	window.Close();
+  window.Close();
 }
 
 /**
@@ -24,35 +24,35 @@ window2D::~window2D() {
  * TODO: uitzoeken welke objecten bewaard kunnen blijven.
  */
 void window2D::addToDraw(image_resource& input) {
-	std::vector<unsigned char> data = input.to_sfml();
-	image.LoadFromMemory(data.data(), data.size());
+  std::vector<unsigned char> data = input.to_sfml();
+  image.LoadFromMemory(data.data(), data.size());
 
-	texture.LoadFromImage(image);
-	sprite = Sprite(texture);
+  texture.LoadFromImage(image);
+  sprite = Sprite(texture);
 }
 
 /**
  * Inhoud hiervan is tijdelijk, de main loop van een window moet ergens anders komen.
  */
 void window2D::Display() {
-	//while (window.IsOpened())
-	  //   {
-	         // Process events
-	         sf::Event event;
-	         while (window.PollEvent(event))
-	         {
-	             // Close window : exit
-	             if (event.Type == sf::Event::Closed)
-	                 window.Close();
-	         }
+  //while (window.IsOpened())
+  //   {
+  // Process events
+  sf::Event event;
+  while (window.PollEvent(event))
+  {
+    // Close window : exit
+    if (event.Type == sf::Event::Closed)
+      window.Close();
+  }
 
-	         // Clear screen
-	         window.Clear();
+  // Clear screen
+  window.Clear();
 
-	         // Draw the sprite
-	         window.Draw(sprite);
+  // Draw the sprite
+  window.Draw(sprite);
 
-	         // Update the window
-	         window.Display();
-	   //  }
+  // Update the window
+  window.Display();
+  //  }
 }
