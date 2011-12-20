@@ -37,13 +37,3 @@ if (SFML_FOUND)
     include_directories(${SFML_INCLUDE_DIRS})
     target_link_libraries(minor_computer_vision ${SFML_LIBRARIES})
 endif (SFML_FOUND)
-find_package(Luabind REQUIRED)
-if (LUABIND_FOUND)
-	message("===== LUAbind Found =====")
-    include_directories(${LUABIND_INCLUDE_DIR})
-    target_link_libraries(minor_computer_vision ${LUABIND_LIBRARY})
-endif(LUABIND_FOUND)
-
-
-
-                                
