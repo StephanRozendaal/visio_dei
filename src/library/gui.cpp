@@ -1,5 +1,5 @@
 ///*
-// * gui.cpp PANNENKOEK
+// * gui.cpp
 // *
 // *  Created on: 28 nov. 2011
 // *      Author: sjors
