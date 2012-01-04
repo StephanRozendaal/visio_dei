@@ -170,8 +170,6 @@ image_resource drawSquares(const image_resource& input,
         int n = (int) squares[i].size();
         polylines(output.get_resource(), &p, &n, 1, true, Scalar(0, 255, 0), 3, CV_AA);
     }
-    // kleine aanpassing voor webcam die erg kleine beelden geeft, 320x200 resolutie
-    resize(output.get_resource(), output.get_resource(), Size(), 3.0, 3.0, INTER_LINEAR);
     return output;
 }
 }
