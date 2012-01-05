@@ -1,19 +1,8 @@
 /*
- * =====================================================================================
+ * rechthoek.cpp
  *
- *       Filename:  rechthoek.cpp
- *
- *    Description:
- *
- *        Version:  1.0
- *        Created:  12/22/2011 11:25:28 AM
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  YOUR NAME (),
- *        Company:
- *
- * =====================================================================================
+ *  Created on: Nov 25, 2011
+ *      Author: stephan
  */
 #include "library.h"
 #include "gui.h"
