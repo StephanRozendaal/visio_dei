@@ -13,14 +13,14 @@ namespace alg
   /**
    * verander de color space van een image_resource.
    **/
-  image_resource change_color_space(const image_resource, int);
+  image_resource change_color_space(const image_resource&, const int);
   namespace segmentation
   {
     /**
      * threshold(image_resource input, double threshold, double max, int type)
      * voer een thresholding operatie uit op een image_resource
      **/
-    void threshold(const image_resource, double, double, int);
+    image_resource threshold(const image_resource&, const double, const double, const int);
   }
   namespace detection
   {
@@ -34,12 +34,13 @@ namespace alg
      * findSquares(image_resource input_image, vector<vector<Point> >)
      * zoekt in de image_resource naar vierkanten, geeft deze terug in een vector van puntenvectoren.
      **/
-    void findSquares(image_resource, std::vector<std::vector<cv::Point> >&);
+    std::vector<std::vector<cv::Point> > findSquares(const image_resource&);
     /**
      * drawSquares(image_resource input_image, vector<vector<Point> >)
      * tekent rechthoeken, welke in het vector van puntvectoren staan in het input_image.
      **/
-    void drawSquares(image_resource, std::vector<std::vector<cv::Point> >&);
+    image_resource drawSquares(const image_resource&, const std::vector<std::vector<cv::Point> >&);
+
     void calibrateCamera();
     void findChessboard();
   }

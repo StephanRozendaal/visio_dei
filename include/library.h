@@ -23,6 +23,7 @@
 #include <new>
 #include <cmath>
 #include <vector>
+#include <thread>
 
 /*------------------------------*/
 
