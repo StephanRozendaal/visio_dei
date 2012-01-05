@@ -59,7 +59,7 @@ double angle(cv::Point pt1, cv::Point pt2, cv::Point pt0)
 }
 
 /**
- * gepikt uit de CV samples
+ * gepikt uit de CV samples, HOE DURF JE!!!
  */
 std::vector<std::vector<cv::Point> > findSquares(const image_resource& input) {
     using namespace std;
