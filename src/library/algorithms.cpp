@@ -17,7 +17,6 @@ image_resource change_color_space(const image_resource& input, const int code)
     using namespace cv;
     image_resource output;
     cvtColor(input.get_resource(), output.get_resource(), code);
-    //image_resource *img_output = new image_resource(output);
     return output;
 }
 /************************************
@@ -55,123 +54,205 @@ double angle(cv::Point pt1, cv::Point pt2, cv::Point pt0)
     double dx2 = pt2.x - pt0.x;
     double dy2 = pt2.y - pt0.y;
     return (dx1 * dx2 + dy1 * dy2)
-           / sqrt((dx1 * dx1 + dy1 * dy1) * (dx2 * dx2 + dy2 * dy2) + 1e-10);
+      / sqrt((dx1 * dx1 + dy1 * dy1) * (dx2 * dx2 + dy2 * dy2) + 1e-10);
 }
 
-/**
- * gepikt uit de CV samples, HOE DURF JE!!!
- */
 std::vector<std::vector<cv::Point> > findSquares(const image_resource& input) {
-    using namespace std;
-    using namespace cv;
+  using namespace std;
+  using namespace cv;
 
-    std::vector<std::vector<cv::Point> > squares;
-    //image resource omzetten
-    //Mat *temp = image_res.get_resource();
-    //Mat image(*temp);
+  std::vector<std::vector<cv::Point> > squares;
+  //waardes voor threshold levels
+  int thresh = 50, N = 11;
+  squares.clear();
 
-    //waardes voor threshold levels
-    int thresh = 50, N = 11;
-    squares.clear();
+  Mat pyr, timg, gray0(input.get_resource().size(), CV_8U), gray;
 
-    Mat pyr, timg, gray0(input.get_resource().size(), CV_8U), gray;
+  // down-scale and upscale the image to filter out the noise
+  pyrDown(input.get_resource(), pyr, Size(input.get_resource().cols / 2, input.get_resource().rows / 2));
+  pyrUp(pyr, timg, input.get_resource().size());
+  vector<vector<Point> > contours;
 
-    // down-scale and upscale the image to filter out the noise
-    pyrDown(input.get_resource(), pyr, Size(input.get_resource().cols / 2, input.get_resource().rows / 2));
-    pyrUp(pyr, timg, input.get_resource().size());
-    vector<vector<Point> > contours;
+  // find squares in every color plane of the image
+  for (int c = 0; c < 3; c++)
+  {
+    int ch[] = { c, 0 };
+    mixChannels(&timg, 1, &gray0, 1, ch, 1);
 
-    // find squares in every color plane of the image
-    for (int c = 0; c < 3; c++)
+    // try several threshold levels
+    for (int l = 0; l < N; l++)
     {
-        int ch[] = { c, 0 };
-        mixChannels(&timg, 1, &gray0, 1, ch, 1);
+      // hack: use Canny instead of zero threshold level.
+      // Canny helps to catch squares with gradient shading
+      if (l == 0)
+      {
+        // apply Canny. Take the upper threshold from slider
+        // and set the lower to 0 (which forces edges merging)
+        Canny(gray0, gray, 0, thresh, 5);
+        // dilate canny output to remove potential
+        // holes between edge segments
+        dilate(gray, gray, Mat(), Point(-1, -1));
+      }
+      else
+      {
+        // apply threshold if l!=0:
+        //     tgray(x,y) = gray(x,y) < (l+1)*255/N ? 255 : 0
+        gray = gray0 >= (l + 1) * 255 / N;
+      }
 
-        // try several threshold levels
-        for (int l = 0; l < N; l++)
+      // find contours and store them all as a list
+      findContours(gray, contours, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
+
+      vector<Point> approx;
+
+      // test each contour
+      for (size_t i = 0; i < contours.size(); i++)
+      {
+        // approximate contour with accuracy proportional
+        // to the contour perimeter
+        approxPolyDP(Mat(contours[i]), approx,
+            arcLength(Mat(contours[i]), true) * 0.02, true);
+
+        // square contours should have 4 vertices after approximation
+        // relatively large area (to filter out noisy contours)
+        // and be convex.
+        // Note: absolute value of an area is used because
+        // area may be positive or negative - in accordance with the
+        // contour orientation
+        if (approx.size() == 4 && fabs(contourArea(Mat(approx))) > 1000
+            && isContourConvex(Mat(approx)))
         {
-            // hack: use Canny instead of zero threshold level.
-            // Canny helps to catch squares with gradient shading
-            if (l == 0)
-            {
-                // apply Canny. Take the upper threshold from slider
-                // and set the lower to 0 (which forces edges merging)
-                Canny(gray0, gray, 0, thresh, 5);
-                // dilate canny output to remove potential
-                // holes between edge segments
-                dilate(gray, gray, Mat(), Point(-1, -1));
-            }
-            else
-            {
-                // apply threshold if l!=0:
-                //     tgray(x,y) = gray(x,y) < (l+1)*255/N ? 255 : 0
-                gray = gray0 >= (l + 1) * 255 / N;
-            }
+          double maxCosine = 0;
 
-            // find contours and store them all as a list
-            findContours(gray, contours, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
+          for (int j = 2; j < 5; j++)
+          {
+            // find the maximum cosine of the angle between joint edges
+            double cosine = fabs(
+                angle(approx[j % 4], approx[j - 2],
+                  approx[j - 1]));
+            maxCosine = MAX(maxCosine, cosine);
+          }
 
-            vector<Point> approx;
-
-            // test each contour
-            for (size_t i = 0; i < contours.size(); i++)
-            {
-                // approximate contour with accuracy proportional
-                // to the contour perimeter
-                approxPolyDP(Mat(contours[i]), approx,
-                             arcLength(Mat(contours[i]), true) * 0.02, true);
-
-                // square contours should have 4 vertices after approximation
-                // relatively large area (to filter out noisy contours)
-                // and be convex.
-                // Note: absolute value of an area is used because
-                // area may be positive or negative - in accordance with the
-                // contour orientation
-                if (approx.size() == 4 && fabs(contourArea(Mat(approx))) > 1000
-                        && isContourConvex(Mat(approx)))
-                {
-                    double maxCosine = 0;
-
-                    for (int j = 2; j < 5; j++)
-                    {
-                        // find the maximum cosine of the angle between joint edges
-                        double cosine = fabs(
-                                            angle(approx[j % 4], approx[j - 2],
-                                                  approx[j - 1]));
-                        maxCosine = MAX(maxCosine, cosine);
-                    }
-
-                    // if cosines of all angles are small
-                    // (all angles are ~90 degree) then write quandrange
-                    // vertices to resultant sequence
-                    if (maxCosine < 0.3)
-                        squares.push_back(approx);
-                }
-            }
+          // if cosines of all angles are small
+          // (all angles are ~90 degree) then write quandrange
+          // vertices to resultant sequence
+          if (maxCosine < 0.3)
+            squares.push_back(approx);
         }
+      }
     }
-    return squares;
+  }
+  return squares;
 }
 
-/**
- * tekent de rechthoeken op het image uit de parameter
- */
 image_resource drawSquares(const image_resource& input,
-                 const std::vector<std::vector<cv::Point> >& squares)
+    const std::vector<std::vector<cv::Point> >& squares)
 {
-    using namespace cv;
-    //image resource omzetten
-    //Mat *temp = image_res.get_resource();
-    //Mat image(*temp);
-    image_resource output(input.get_resource());
-    for (size_t i = 0; i < squares.size(); i++)
-    {
-        const Point* p = &squares[i][0];
-        int n = (int) squares[i].size();
-        polylines(output.get_resource(), &p, &n, 1, true, Scalar(0, 255, 0), 3, CV_AA);
-    }
-    return output;
+  using namespace cv;
+  image_resource output(input.get_resource());
+  for (size_t i = 0; i < squares.size(); i++)
+  {
+    const Point* p = &squares[i][0];
+    int n = (int) squares[i].size();
+    polylines(output.get_resource(), &p, &n, 1, true, Scalar(0, 255, 0), 3, CV_AA);
+  }
+  return output;
 }
+
+calibrationParameters calibrateCamera(const int n_boards, const int board_w, const int board_h, const video_resource& cam) {
+  //boost::scoped_ptr<Webcam> cam;
+
+  //int n_boards Number of pictures taken
+  //int board_w Board width in squares
+  //int board_h Board height in squares
+
+  float boardScaleFactor = 25; // Chessboard square edge length in units you want to use
+
+  int numCorners = board_h * board_w;
+  Size board_size = Size(board_w, board_h);
+
+  vector<Point2f> corners;
+  vector<Point3f> object_corners;
+
+  vector<vector<Point2f> > image_points;
+  vector<vector<Point3f> > object_points;
+
+  int successes = 0;
+
+  for (int i = 0; i < numCorners; ++i) {
+    object_corners.push_back(Point3f(boardScaleFactor*(i / board_h), boardScaleFactor*(i % board_h), 0.0f));
+  }
+
+  namedWindow("Calibration", 1);
+  Mat img;
+  Mat gray_img;
+  int c;
+  while (successes < n_boards) {
+    while (waitKey(30) < 0) {
+      img = cam.get_resource();
+
+      if (!img.empty()) {
+        imshow("Calibration", img);
+      }
+      displayOverlay("Calibration", "Press any key to take a picture", 1);
+    }
+    bool patternFound = findChessboardCorners(img, board_size, corners, CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FILTER_QUADS);
+
+    if (patternFound) {
+      cvtColor(img, gray_img, CV_BGR2GRAY); // Convert to gray image for cornerSubPix
+
+      cornerSubPix(gray_img, corners, Size(11,11), Size(-1,-1), TermCriteria(CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 30, 0.1));
+      drawChessboardCorners(img, board_size, corners, patternFound);
+
+      imshow("Calibration", img);
+      displayOverlay("Calibration", "Press S to save calibration image or any other key to discard it", 1);
+      c = waitKey(0);
+
+      if (c == 's' || c == 'S') {
+        image_points.push_back(corners);
+        object_points.push_back(object_corners);
+        imshow("Calibration", gray_img);
+        displayOverlay("Calibration", "Calibration image saved. Press any key to continue", 1);
+        successes++;
+        waitKey(0);
+      } else {
+        imshow("Calibration", img);
+        displayOverlay("Calibration", "Calibration image discarded. Press any key to continue", 1);
+        waitKey(0);
+      }
+    } else {
+      imshow("Calibration", img);
+      displayOverlay("Calibration", "Could not detect calibration pattern in image. Press any key to continue", 1);
+      waitKey(0);
+    }
+  } // End of collection loop
+
+  Mat intrinsic_matrix(3,3,CV_32FC1);
+  Mat distortion_coeffs;
+  vector<Mat> rvecs;
+  vector<Mat> tvecs;
+
+  intrinsic_matrix.ptr<float>(0)[0] = 1;
+  intrinsic_matrix.ptr<float>(1)[1] = 1;
+
+  // Calibrate camera
+  // NB: Converts matrices to 64bit versions
+  calibrateCamera(object_points, image_points, img.size(), intrinsic_matrix, distortion_coeffs, rvecs, tvecs);
+
+  std::cout << "Intrinsic matrix after calibration:" << std::endl;
+  std::cout << intrinsic_matrix.at<double>(0,0) << " " << intrinsic_matrix.at<double>(0,1) << " " << intrinsic_matrix.at<double>(0,2) << std::endl;
+  std::cout << intrinsic_matrix.at<double>(1,0) << " " <<  intrinsic_matrix.at<double>(1,1)<< " " << intrinsic_matrix.at<double>(1,2) << std::endl;
+  std::cout << intrinsic_matrix.at<double>(2,0) << " " << intrinsic_matrix.at<double>(2,1) << " " << intrinsic_matrix.at<double>(2,2) << std::endl;
+
+  std::cout << "Distortion coefficients:" << std::endl;
+  std::cout << distortion_coeffs.at<double>(0,0) << " " << distortion_coeffs.at<double>(0,1) << " " << distortion_coeffs.at<double>(0,2) << " " << distortion_coeffs.at<double>(0,3) << std::endl;
+
+  return CalibrationParameters(intrinsic_matrix, distortion_coeffs);
+}
+
+void findChessBoard( ) {
+
+
 }
 /* **********************************
  * EINDE NAMESPACE DETECTION
@@ -180,3 +261,4 @@ image_resource drawSquares(const image_resource& input,
 /* ************************************
  * EINDE NAMESPACE ALG
  * ************************************/
+}

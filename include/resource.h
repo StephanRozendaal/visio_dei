@@ -59,11 +59,11 @@ protected:
 };
 
 /**
- * Class CalibrationParameters
+ * Class calibrationParameters
  * Constructor: () - leeg.
- * Constructor: (intrinsic_parameters, distortion_coeffs, hues, dhues, satval_l, satval_h)
+ * Constructor: (intrinsic_parameters, distortion_coeffs)
  * void saveToFile(string filename) - slaat de parameters op in een XML file.
- * calibrationParameters fromFile(string filename) haalt parameters uit filename, geeft een parametersobject terug.
+ * void  fromFile(string filename) haalt parameters uit filename.
  */
 class calibrationParameters {
   public:
@@ -76,5 +76,4 @@ class calibrationParameters {
     void saveToFile(std::string filename);
     void fromFile(std::string filename);
 };
-
 #endif /* RESOURCE_H_ */

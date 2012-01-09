@@ -58,7 +58,7 @@ namespace alg
      **/
     image_resource drawSquares(const image_resource&, const std::vector<std::vector<cv::Point> >&);
 
-    void calibrateCamera();
+    calibrationParameters calibrateCamera(const int n_boards, const int board_w, const int board_h, const video_resource& cam); 
     void findChessboard();
   }
 }
