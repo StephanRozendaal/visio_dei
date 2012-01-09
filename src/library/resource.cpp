@@ -112,21 +112,62 @@ void video_resource::set_resource(const char* input)
 //TODO: exception throw declaratie als er geen videobeeld is.
 cv::Mat& video_resource::get_resource() const
 {
-    cv::Mat temp_image;
-    const_cast<cv::VideoCapture&>(this->video) >> const_cast<cv::Mat&>(this->image);
-    return const_cast<cv::Mat&>(this->image);
+  cv::Mat temp_image;
+  const_cast<cv::VideoCapture&>(this->video) >> const_cast<cv::Mat&>(this->image);
+  return const_cast<cv::Mat&>(this->image);
 }
 
 std::vector<unsigned char> video_resource::to_sfml()
 {
-    this->get_resource();
-    buffer.clear();
-    //voor encoderings instellingen
-    std::vector<int> options;
-    //vector wordt per set van 2 int waardes uitgelezen
-    options.push_back(CV_IMWRITE_PNG_COMPRESSION); // naam of key
-    options.push_back(2); //gewenste waarde
+  this->get_resource();
+  buffer.clear();
+  //voor encoderings instellingen
+  std::vector<int> options;
+  //vector wordt per set van 2 int waardes uitgelezen
+  options.push_back(CV_IMWRITE_PNG_COMPRESSION); // naam of key
+  options.push_back(2); //gewenste waarde
 
-    cv::imencode(".png", image, buffer, options );
-    return buffer;
+  cv::imencode(".png", image, buffer, options );
+  return buffer;
 }
+
+calibrationParameters::calibrationParameters() : 
+  intrinsic_parameters(), 
+  distortion_coeffs() 
+{ }
+
+calibrationParameters::calibrationParameters(const cv::Mat ip, const cv::Mat dc) : 
+  intrinsic_parameters(ip), 
+  distortion_coeffs(dc) 
+{ }
+
+void calibrationParameters::saveToFile(const std::string filename)
+{
+  try {
+    cv::FileStorage fs(filename, cv::FileStorage::WRITE);
+    fs << "intrinsic" << this->intrinsic_parameters;
+    fs << "distortion" << this->distortion_coeffs;
+    fs.release();
+  } catch (cv::Exception& e) {
+    throw std::runtime_error(e.what());
+  }
+}
+
+void calibrationParameters::fromFile(const std::string filename)
+{
+  this->intrinsic_parameters = cv::Mat();
+  this->distortion_coeffs = cv::Mat();
+  try {
+    cv::FileStorage fs(filename, cv::FileStorage::READ);
+    fs["intrinsic"] >> this->intrinsic_parameters;
+    fs["distortion"] >> this->distortion_coeffs;
+    fs.release();
+    // OpenCV silently ignores errors (like missing file to read),
+    // so let's check that we got all parameters
+    if (this->intrinsic_parameters.empty() || this->distortion_coeffs.empty())
+      throw std::runtime_error("Missing calibration parameters in " + filename);
+  } catch (cv::Exception& e) {
+    throw std::runtime_error(e.what());
+  }
+}
+

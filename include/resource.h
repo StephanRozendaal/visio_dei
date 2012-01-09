@@ -51,11 +51,30 @@ public:
 	video_resource(const char*);
 	virtual ~video_resource();
 	void set_resource(const int);
-	void set_resource(const char*);
-	cv::Mat& get_resource() const;
-	std::vector<unsigned char> to_sfml();
+  void set_resource(const char*);
+  cv::Mat& get_resource() const;
+  std::vector<unsigned char> to_sfml();
 protected:
-	cv::VideoCapture video;
+  cv::VideoCapture video;
+};
+
+/**
+ * Class CalibrationParameters
+ * Constructor: () - leeg.
+ * Constructor: (intrinsic_parameters, distortion_coeffs, hues, dhues, satval_l, satval_h)
+ * void saveToFile(string filename) - slaat de parameters op in een XML file.
+ * calibrationParameters fromFile(string filename) haalt parameters uit filename, geeft een parametersobject terug.
+ */
+class calibrationParameters {
+  public:
+    cv::Mat intrinsic_parameters;
+    cv::Mat distortion_coeffs;
+
+    calibrationParameters();
+    calibrationParameters(cv::Mat ip, cv::Mat dc);
+
+    void saveToFile(std::string filename);
+    void fromFile(std::string filename);
 };
 
 #endif /* RESOURCE_H_ */
