@@ -57,9 +57,17 @@ namespace alg
      * return: input image waarin de rechthoeken zijn getekend.
      **/
     image_resource drawSquares(const image_resource&, const std::vector<std::vector<cv::Point> >&);
-
+/**
+ * calibrationParameters calibrateCamera(const int n_boards, const int board_w, const int board_h, const video_resource& cam)
+ * calibreert de camera met een schaakbord.
+ * int n_boards = aantal keer dat de calibratie wordt uitgevoerd.
+ * int board_h = aantal vlakken in de hoogte van het schaakbord.
+ * int board_w = aantal vlakken in de breedte van het schaakbord.
+ * video_resource& cam = referentie naar een video_resource object.
+ * return: calibrationParameters object.
+ **/
     calibrationParameters calibrateCamera(const int n_boards, const int board_w, const int board_h, const video_resource& cam); 
-    void findChessboard();
+    void findChessboard(const calibrationParameters& cp, const image_resource& img);
   }
 }
 #endif /* ALGORITHMS_H_ */

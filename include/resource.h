@@ -61,7 +61,7 @@ protected:
 /**
  * Class calibrationParameters
  * Constructor: () - leeg.
- * Constructor: (intrinsic_parameters, distortion_coeffs)
+ * Constructor: (intrinsic_parameters, distortion_coeffs, board_w, board_h)
  * void saveToFile(string filename) - slaat de parameters op in een XML file.
  * void  fromFile(string filename) haalt parameters uit filename.
  */
@@ -69,9 +69,11 @@ class calibrationParameters {
   public:
     cv::Mat intrinsic_parameters;
     cv::Mat distortion_coeffs;
+    int board_w;
+    int board_h;
 
     calibrationParameters();
-    calibrationParameters(cv::Mat ip, cv::Mat dc);
+    calibrationParameters(const cv::Mat ip, const cv::Mat dc, const int board_w, const int board_h);
 
     void saveToFile(std::string filename);
     void fromFile(std::string filename);

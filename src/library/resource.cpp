@@ -133,12 +133,16 @@ std::vector<unsigned char> video_resource::to_sfml()
 
 calibrationParameters::calibrationParameters() : 
   intrinsic_parameters(), 
-  distortion_coeffs() 
+  distortion_coeffs(),
+  board_w(),
+  board_h() 
 { }
 
-calibrationParameters::calibrationParameters(const cv::Mat ip, const cv::Mat dc) : 
+calibrationParameters::calibrationParameters(const cv::Mat ip, const cv::Mat dc, const int board_w, const int board_h) : 
   intrinsic_parameters(ip), 
-  distortion_coeffs(dc) 
+  distortion_coeffs(dc),
+  board_w(board_w),
+  board_h(board_h) 
 { }
 
 void calibrationParameters::saveToFile(const std::string filename)
@@ -147,6 +151,8 @@ void calibrationParameters::saveToFile(const std::string filename)
     cv::FileStorage fs(filename, cv::FileStorage::WRITE);
     fs << "intrinsic" << this->intrinsic_parameters;
     fs << "distortion" << this->distortion_coeffs;
+    fs << "board_w" << this->board_w;
+    fs << "board_h" << this->board_h;
     fs.release();
   } catch (cv::Exception& e) {
     throw std::runtime_error(e.what());
@@ -157,14 +163,17 @@ void calibrationParameters::fromFile(const std::string filename)
 {
   this->intrinsic_parameters = cv::Mat();
   this->distortion_coeffs = cv::Mat();
+  this->board_w = 0, this->board_h = 0;
   try {
     cv::FileStorage fs(filename, cv::FileStorage::READ);
     fs["intrinsic"] >> this->intrinsic_parameters;
     fs["distortion"] >> this->distortion_coeffs;
+    fs["board_w"] >> this->board_w;
+    fs["board_h"] >> this->board_h;
     fs.release();
     // OpenCV silently ignores errors (like missing file to read),
     // so let's check that we got all parameters
-    if (this->intrinsic_parameters.empty() || this->distortion_coeffs.empty())
+    if (this->intrinsic_parameters.empty() || this->distortion_coeffs.empty() || this->board_w || this->board_h)
       throw std::runtime_error("Missing calibration parameters in " + filename);
   } catch (cv::Exception& e) {
     throw std::runtime_error(e.what());

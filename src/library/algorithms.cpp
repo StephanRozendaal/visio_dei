@@ -247,12 +247,49 @@ calibrationParameters calibrateCamera(const int n_boards, const int board_w, con
   std::cout << "Distortion coefficients:" << std::endl;
   std::cout << distortion_coeffs.at<double>(0,0) << " " << distortion_coeffs.at<double>(0,1) << " " << distortion_coeffs.at<double>(0,2) << " " << distortion_coeffs.at<double>(0,3) << std::endl;
 
-  return CalibrationParameters(intrinsic_matrix, distortion_coeffs);
+  return calibrationParameters(intrinsic_matrix, distortion_coeffs, board_w, board_h);
 }
 
-void findChessBoard( ) {
+void findChessBoard(const calibrationParameters& cp, const image_resource& img) {
+  using namespace cv;
 
+  std::string window;
+  int numCorners = cp.board_h * cp.board_w;
+  Size board_size = Size(cp.board_w, cp.board_h);
+  std::string loc;
+  std::string rot;
 
+  vector<Point3f> object_corners;
+  vector<Point2f> corners;
+
+  for (int i = 0; i < numCorners; ++i) {
+    object_corners.push_back(Point3f(boardScaleFactor*(i / cp.board_h), boardScaleFactor*(i % cp.board_h), 0.0f));
+  }
+
+  bool patternFound = findChessboardCorners(img.get_resource(), board_size, corners, CALIB_CB_FAST_CHECK);
+  Mat img = img.get_resource();
+  drawChessboardCorners(img, board_size, corners, patternFound);
+
+  if (patternFound && (int)corners.size() == numCorners) {
+    solvePnP(Mat(object_corners), Mat(corners), cp.intrinsic_parameters,cp.distortion_coeffs,rvec,tvec,false);
+    //loc = "x: " + boost::lexical_cast<std::string>((int)tvec.at<double>(0,0)) + ' '
+    //  + "y: " + boost::lexical_cast<std::string>((int)tvec.at<double>(0,1)) + ' '
+    //  + "z: " + boost::lexical_cast<std::string>((int)tvec.at<double>(0,2));
+    //putText(img, loc,
+    //    Point(0,60), FONT_HERSHEY_PLAIN, 1, CV_RGB(255,0,255));
+    Mat rmat;
+    Rodrigues(rvec,rmat);
+    double roll, pitch, yaw;
+    roll = atan2(rmat.at<double>(1,0),rmat.at<double>(0,0));
+    pitch = -asin(rmat.at<double>(2,0));
+    yaw = atan2(rmat.at<double>(2,1),rmat.at<double>(2,2));
+    //rot = "roll (z): " + boost::lexical_cast<std::string>((int)(roll*180/3.1415)) + ' '
+    //  + "pitch (y): " + boost::lexical_cast<std::string>((int)(pitch*180/3.1415)) + ' '
+    //  + "yaw (x): " + boost::lexical_cast<std::string>((int)(yaw*180/3.1415));
+    //putText(img, rot,
+    //    Point(0,75), FONT_HERSHEY_PLAIN, 1, CV_RGB(255,0,255));
+  }
+  imshow(window, img);
 }
 /* **********************************
  * EINDE NAMESPACE DETECTION
