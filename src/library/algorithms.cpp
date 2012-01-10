@@ -160,6 +160,10 @@ image_resource drawSquares(const image_resource& input,
 }
 
 calibrationParameters calibrateCamera(const int n_boards, const int board_w, const int board_h, const video_resource& cam) {
+
+  using namespace cv;
+  using namespace std;
+
   //boost::scoped_ptr<Webcam> cam;
 
   //int n_boards Number of pictures taken
@@ -250,8 +254,9 @@ calibrationParameters calibrateCamera(const int n_boards, const int board_w, con
   return calibrationParameters(intrinsic_matrix, distortion_coeffs, board_w, board_h);
 }
 
-void findChessBoard(const calibrationParameters& cp, const image_resource& img) {
+void findChessBoard(const calibrationParameters& cp, const image_resource& inputImg) {
   using namespace cv;
+  using namespace std;
 
   std::string window;
   int numCorners = cp.board_h * cp.board_w;
@@ -262,12 +267,17 @@ void findChessBoard(const calibrationParameters& cp, const image_resource& img) 
   vector<Point3f> object_corners;
   vector<Point2f> corners;
 
+  vector<Mat> rvec;
+  vector<Mat> tvec;
+
+  float boardScaleFactor = 25; // Chessboard square edge length in units you want to use
+
   for (int i = 0; i < numCorners; ++i) {
     object_corners.push_back(Point3f(boardScaleFactor*(i / cp.board_h), boardScaleFactor*(i % cp.board_h), 0.0f));
   }
 
-  bool patternFound = findChessboardCorners(img.get_resource(), board_size, corners, CALIB_CB_FAST_CHECK);
-  Mat img = img.get_resource();
+  bool patternFound = findChessboardCorners(inputImg.get_resource(), board_size, corners, CALIB_CB_FAST_CHECK);
+  Mat img (inputImg.get_resource());
   drawChessboardCorners(img, board_size, corners, patternFound);
 
   if (patternFound && (int)corners.size() == numCorners) {
