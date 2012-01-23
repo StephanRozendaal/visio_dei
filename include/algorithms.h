@@ -7,9 +7,6 @@
 
 #ifndef ALGORITHMS_H_
 #define ALGORITHMS_H_
-
-namespace alg
-{
   /**
    * image_resource change_color_space(const image_resource&, const int)
    * verander de color space van een image_resource.
@@ -18,8 +15,6 @@ namespace alg
    * return:            image_resource object.
    **/
   image_resource change_color_space(const image_resource&, const int);
-  namespace segmentation
-  {
     /**
      * image_resource threshold(image_resource input, double threshold, double max, int type)
      * voer een thresholding operatie uit op een image_resource.
@@ -30,9 +25,6 @@ namespace alg
      * return:      thresholded image object.
      **/
     image_resource threshold(const image_resource&, const double, const double, const int);
-  }
-  namespace detection
-  {
     /**
      * angle(Point 1, Point 2, Point 0)
      * berekent de hoek die tussen 3 punten ligt.
@@ -67,7 +59,5 @@ namespace alg
  * return: calibrationParameters object.
  **/
     calibrationParameters calibrateCamera(const int n_boards, const int board_w, const int board_h, const video_resource& cam); 
-    void findChessboard(const calibrationParameters& cp, const image_resource& img);
-  }
-}
+    void findChessBoard(const calibrationParameters& cp, const image_resource& img);
 #endif /* ALGORITHMS_H_ */

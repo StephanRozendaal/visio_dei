@@ -15,8 +15,8 @@ int main() {
 
   vector<vector< cv::Point> > buffer;
   while(1) {
-    buffer = alg::detection::findSquares(video);
-    detection_img = alg::detection::drawSquares(video,buffer);
+    buffer = findSquares(video);
+    detection_img = drawSquares(video,buffer);
     window.addToDraw(detection_img);
     window.Display();
   }

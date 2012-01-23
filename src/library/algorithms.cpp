@@ -7,6 +7,11 @@
 
 #include "library.h"
 
+namespace alg
+{
+/************************************
+ * BEGIN NAMESPACE ALG
+ * **********************************/
 image_resource change_color_space(const image_resource& input, const int code)
 {
     using namespace cv;
@@ -15,13 +20,24 @@ image_resource change_color_space(const image_resource& input, const int code)
     return output;
 }
 image_resource threshold(const image_resource& input, const double thresh, const double max,
-                         const int type)
+                          const int type)
 {
     using namespace cv;
     image_resource output;
     threshold(input.get_resource(), output.get_resource(), thresh, max, type);
     return output;
 }
+}
+/* **********************************
+ * EINDE NAMESPACE SEGMENTATION
+ * **********************************/
+
+/* **********************************
+ * BEGIN NAMESPACE DETECTION
+ * **********************************/
+namespace detection
+{
+
 /**
  * angle() is een hulpfunctie voor findSquares()
  */

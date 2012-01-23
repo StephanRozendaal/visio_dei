@@ -173,7 +173,7 @@ void calibrationParameters::fromFile(const std::string filename)
     fs.release();
     // OpenCV silently ignores errors (like missing file to read),
     // so let's check that we got all parameters
-    if (this->intrinsic_parameters.empty() || this->distortion_coeffs.empty() || this->board_w || this->board_h)
+    if (this->intrinsic_parameters.empty() || this->distortion_coeffs.empty())
       throw std::runtime_error("Missing calibration parameters in " + filename);
   } catch (cv::Exception& e) {
     throw std::runtime_error(e.what());

@@ -2,6 +2,8 @@ file(GLOB SRC "library/*.cpp")
 message("source_code=${SRC}")
 add_library(minor_computer_vision SHARED ${SRC})
 add_executable(vind_rechthoek rechthoek.cpp)
+add_executable(vind_patroon_schaakbord vind_patroon_schaakbord.cpp)
+add_executable(calibratie_schaakbord calibratie_schaakbord.cpp)
     
 #libraries check, en instellingen
 find_package(OpenCV REQUIRED)
@@ -16,4 +18,7 @@ if (SFML_FOUND)
     include_directories(${SFML_INCLUDE_DIRS})
     target_link_libraries(minor_computer_vision ${SFML_LIBRARIES})
 endif (SFML_FOUND)
+
 target_link_libraries(vind_rechthoek ${OpenCV_LIBS} ${SFML_LIBRARIES} minor_computer_vision)
+target_link_libraries(vind_patroon_schaakbord ${OpenCV_LIBS} ${SFML_LIBRARIES} minor_computer_vision)
+target_link_libraries(calibratie_schaakbord ${OpenCV_LIBS} ${SFML_LIBRARIES} minor_computer_vision)
