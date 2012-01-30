@@ -4,7 +4,7 @@
  *  Created on: Dec 7, 2011
  *      Author: stephan
  */
-#include "gui.h"
+#include "library.h"
 using namespace sf;
 
 window2D::window2D() {

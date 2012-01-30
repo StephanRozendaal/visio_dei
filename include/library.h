@@ -23,7 +23,9 @@
 #include <new>
 #include <cmath>
 #include <vector>
-#include <thread>
+#include <boost/thread/thread.hpp>
+#include <boost/scoped_ptr.hpp>
+#include <boost/thread/mutex.hpp>
 
 /*------------------------------*/
 
@@ -32,7 +34,9 @@
  */
 #include "input.h"
 #include "resource.h"
+#include "gui.h"
 #include "algorithms.h"
+
 
 /*------------------------------*/
 

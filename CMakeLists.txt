@@ -6,5 +6,5 @@ project(minor_computer_vision)
 #source files zitten in directory src/
 include_directories("include")
 #we gebruiken C++11
-set(CMAKE_CXX_FLAGS "-std=c++0x")
+set(CMAKE_CXX_FLAGS "-std=c++0x -pthread")
 add_subdirectory(src)

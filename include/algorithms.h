@@ -31,24 +31,24 @@
      * Point 1,2,3: 3 CV punten.
      * return:      double waarde graden van de hoek.
      **/
-    double angle(cv::Point, cv::Point, cv::Point);
+double angle(cv::Point, cv::Point, cv::Point);
 
-    /**
-     * vector >> vector<Point> findSquares(image_resource input_image&)
-     * zoekt in de image_resource naar vierkanten
-     * input_image&:    image_resource waarin vierkanten gezocht worden.
-     * return:          vector van puntenvectoren.
-     **/
-    std::vector<std::vector<cv::Point> > findSquares(const image_resource&);
+/**
+ * vector >> vector<Point> findSquares(image_resource input_image&)
+ * zoekt in de image_resource naar vierkanten
+ * input_image&:    image_resource waarin vierkanten gezocht worden.
+ * return:          vector van puntenvectoren.
+ **/
+std::vector<std::vector<cv::Point> > findSquares(const image_resource&);
 
-    /**
-     * image_resource drawSquares(image_resource input_image&, vector<vector<Point> >&)
-     * tekent rechthoeken
-     * input_image&:    input image waarin rechthoeken in worden getekend.
-     * vector->vector:  puntvectoren
-     * return: input image waarin de rechthoeken zijn getekend.
-     **/
-    image_resource drawSquares(const image_resource&, const std::vector<std::vector<cv::Point> >&);
+/**
+ * image_resource drawSquares(image_resource input_image&, vector<vector<Point> >&)
+ * tekent rechthoeken
+ * input_image&:    input image waarin rechthoeken in worden getekend.
+ * vector->vector:  puntvectoren
+ * return: input image waarin de rechthoeken zijn getekend.
+ **/
+image_resource drawSquares(const image_resource&, const std::vector<std::vector<cv::Point> >&);
 /**
  * calibrationParameters calibrateCamera(const int n_boards, const int board_w, const int board_h, const video_resource& cam)
  * calibreert de camera met een schaakbord.
@@ -58,6 +58,6 @@
  * video_resource& cam = referentie naar een video_resource object.
  * return: calibrationParameters object.
  **/
-    calibrationParameters calibrateCamera(const int n_boards, const int board_w, const int board_h, const video_resource& cam); 
-    void findChessBoard(const calibrationParameters& cp, const image_resource& img);
+calibrationParameters calibrateCamera(const int n_boards, const int board_w, const int board_h, const video_resource& cam); 
+void findChessBoard(const calibrationParameters& cp, const image_resource& img, window3D& window_3d);
 #endif /* ALGORITHMS_H_ */
