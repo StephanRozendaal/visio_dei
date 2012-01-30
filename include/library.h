@@ -6,10 +6,10 @@
  *
  *      Beschrijving:
  *      computer vision library voor gebruik in deze applicatie.
- *      Wat komt hierin:
+ *      Wat zit hierin:
  *      	een input bron ( camera of stille beelden)
- *      	Welke operaties er op de bron moeten worden uitgevoerd
- *      	output, en welke vorm deze moet zijn
+ *      	computer vision operaties
+ *      	operaties die output genereren
  */
 
 #ifndef LIBRARY_H_
@@ -23,16 +23,12 @@
 #include <new>
 #include <cmath>
 #include <vector>
-#include <boost/thread/thread.hpp>
-#include <boost/scoped_ptr.hpp>
-#include <boost/thread/mutex.hpp>
 
 /*------------------------------*/
 
 /**
  * local header includes
  */
-#include "input.h"
 #include "resource.h"
 #include "gui.h"
 #include "algorithms.h"
