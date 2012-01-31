@@ -246,7 +246,6 @@ void findChessBoard(const calibrationParameters& cp, const image_resource& img, 
   using namespace cv;
 
   float boardScaleFactor = 25;
-  std::string window;
   int numCorners = cp.board_h * cp.board_w;
   Size board_size = Size(cp.board_w, cp.board_h);
   std::string loc;
@@ -284,30 +283,30 @@ void findChessBoard(const calibrationParameters& cp, const image_resource& img, 
       //  + "yaw (x): " + boost::lexical_cast<std::string>((int)(yaw*180/3.1415));
       //putText(img, rot,
       //    Point(0,75), FONT_HERSHEY_PLAIN, 1, CV_RGB(255,0,255));
+      window_3d.addObject(object_corners, tmat, rmat);
     }
   //print het translatiematrix
-  std::cout << "translatiematrix: " << std::endl;
-  for(int i = 0; i < tvec.rows; i++)
-    {
-      const double* M = tvec.ptr<double>(i);
-      for(int j = 0; j < tvec.cols; j++)
-        {
-	  std::cout << M[j] << std::endl;
-        }
-    }
+  // std::cout << "translatiematrix: " << std::endl;
+  // for(int i = 0; i < tvec.rows; i++)
+  //   {
+  //     const double* M = tvec.ptr<double>(i);
+  //     for(int j = 0; j < tvec.cols; j++)
+  //       {
+  // 	  std::cout << M[j] << std::endl;
+  //       }
+  //   }
   //print het rotatiematrix
-  std::cout << "rotatiematrix: " << std::endl;
-  for(int i = 0; i < rvec.rows; i++)
-    {
-      const double* M = rvec.ptr<double>(i);
-      for(int j = 0; j < rvec.cols; j++)
-        {
-	  std::cout << M[j] << std::endl;
-        }
-    }
-  imshow(window, img.get_resource());
+  // std::cout << "rotatiematrix: " << std::endl;
+  // for(int i = 0; i < rvec.rows; i++)
+  //   {
+  //     const double* M = rvec.ptr<double>(i);
+  //     for(int j = 0; j < rvec.cols; j++)
+  //       {
+  // 	  std::cout << M[j] << std::endl;
+  //       }
+  //   }
   //OpenGL spielerij
   // window_3d.startDraw();
-  //window.addObject(Mat(object_corners), tmat, rmat);
+  imshow("window", img.get_resource());
   // window_3d.endDraw();
 }
